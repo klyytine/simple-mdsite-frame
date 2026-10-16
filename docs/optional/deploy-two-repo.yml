@@ -1,0 +1,62 @@
+# Option B (optional): private source repository, public output repository.
+# Setup steps: docs/TWO_REPO_DEPLOY.md
+# To use: copy this file to .github/workflows/deploy.yml in the PRIVATE repo
+# and delete Option A there. Replace the three CHANGE_ME values below.
+name: Build and publish to public repo
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+env:
+  PUBLIC_REPO: CHANGE_ME_owner/CHANGE_ME_owner.github.io
+  BOT_NAME: site-deploy
+  BOT_EMAIL: CHANGE_ME_id+username@users.noreply.github.com
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build site
+        run: python build.py --out dist
+
+      - name: Verify CNAME is present (only if you use a custom domain)
+        run: |
+          if grep -q '"domain": ""' settings.json; then echo "no custom domain"; else test -s dist/CNAME; fi
+
+      - name: Publish to the public repository
+        env:
+          DEPLOY_KEY: ${{ secrets.PAGES_DEPLOY_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "$DEPLOY_KEY" || { echo "Secret PAGES_DEPLOY_KEY is missing"; exit 1; }
+          mkdir -p ~/.ssh
+          echo "$DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          cd dist
+          git init -q -b main
+          git config user.name "$BOT_NAME"
+          git config user.email "$BOT_EMAIL"
+          git add -A
+          git commit -q -m "Publish $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push -q --force "git@github.com:${PUBLIC_REPO}.git" HEAD:main

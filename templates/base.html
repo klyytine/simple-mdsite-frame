@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{page_title}} | {{site_title}}</title>
+<meta name="description" content="{{description}}">
+<link rel="stylesheet" href="{{root}}assets/css/site.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="lang" aria-label="{{lang_label}}">
+    {{lang_switch}}
+  </nav>
+  <div class="identity">
+    <a href="{{home_url}}" class="name">{{site_title}}</a>
+    <span class="tagline">{{site_tagline}}</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <aside class="col-nav" aria-label="{{nav_label}}">
+    <details class="mobile-menu" open>
+      <summary>{{menu_label}}</summary>
+      <nav class="tree">
+{{tree}}
+      </nav>
+    </details>
+  </aside>
+
+  <main class="col-main">
+{{content}}
+  </main>
+
+  <aside class="col-meta" aria-label="{{meta_label}}">
+{{meta}}
+  </aside>
+
+</div>
+
+<footer class="site-footer">
+  <div class="contact">
+    {{contact}}
+  </div>
+  <div class="legal">
+{{footer_links}}
+    <span class="updated">{{updated_label}} {{build_date}}</span>
+  </div>
+</footer>
+
+</body>
+</html>

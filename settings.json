@@ -1,0 +1,50 @@
+{
+  "site": {
+    "domain": "",
+    "title": {
+      "en": "Your Name",
+      "fi": "Oma Nimi"
+    },
+    "tagline": {
+      "en": "One line about what you do",
+      "fi": "Yksi rivi siitä, mitä teet"
+    },
+    "default_lang": "en",
+    "languages": ["en", "fi"],
+    "email": "you@example.com",
+    "contact_links": [
+      { "label": "LinkedIn", "href": "https://www.linkedin.com/in/your-profile" },
+      { "label": "GitHub", "href": "https://github.com/your-username" }
+    ]
+  },
+  "nav": [
+    {
+      "slug": "index",
+      "visible": true,
+      "title": { "en": "Home", "fi": "Etusivu" }
+    },
+    {
+      "slug": "projects",
+      "visible": true,
+      "title": { "en": "Projects", "fi": "Projektit" },
+      "children": [
+        {
+          "slug": "example-project",
+          "visible": true,
+          "title": { "en": "Example project", "fi": "Esimerkkiprojekti" }
+        }
+      ]
+    },
+    {
+      "slug": "about",
+      "visible": true,
+      "title": { "en": "About", "fi": "Minusta" }
+    },
+    {
+      "slug": "privacy",
+      "visible": true,
+      "footer_only": true,
+      "title": { "en": "Privacy", "fi": "Tietosuoja" }
+    }
+  ]
+}
